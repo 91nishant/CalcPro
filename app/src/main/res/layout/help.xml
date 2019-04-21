@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000" >
+    
+<TextView 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="  This application presents you with the simplest view of a calculator without limiting it's capabilities to make complex calculations with higher degree of precision.
+    For more options switch from portrait to landscape view. The next version of this calculator will be available soon with a lot of more mathematical signs and functions. It will further enable you to evaluate more complex expressions.\n"
+    />
+</LinearLayout>
