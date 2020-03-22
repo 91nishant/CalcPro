@@ -1,14 +1,13 @@
-package com.nian.calcpro;
+package com.nian.calcpro.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import static com.nian.calcpro.engine.Evaluator.InfixToPostfix;
+import com.nian.calcpro.R;
+
 import static com.nian.calcpro.engine.Evaluator.evaluate;
 import static com.nian.calcpro.engine.Evaluator.getErrorString;
 import static com.nian.calcpro.engine.Evaluator.isErrorExp;
@@ -79,17 +78,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         printVerbose(TAG, "onResume");
         super.onResume();
-        initUiListeners();
     }
 
     @Override
     protected void onPause() {
         printVerbose(TAG, "onPause");
         super.onPause();
-    }
-
-    private void initUiListeners() {
-        printVerbose(TAG, "initUiListeners");
     }
 
     @Override
@@ -103,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initialize() {
+        printVerbose(TAG, "initialize");
         result = (Button) findViewById(R.id.result);
         inverse = (Button) findViewById(R.id.inverse);
         squareroot = (Button) findViewById(R.id.squareroot);
@@ -163,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void link() {
+        printVerbose(TAG, "link");
         inverse.setOnClickListener(this);
         squareroot.setOnClickListener(this);
         square.setOnClickListener(this);
@@ -213,32 +209,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        /*MenuInflater up = getMenuInflater();
-        up.inflate(R.menu.activity_calculator, menu);*/
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
-        /*switch(item.getItemId()) {
-            case R.id.help:
-                in1 = new Intent("com.example.calculator.HELP");
-                startActivity(in1);
-                break;
-
-            case R.id.aboutus:
-                in1 = new Intent("com.example.calculator.ABOUTUS");
-                startActivity(in1);
-                break;
-        }*/
-        return false;
-    }
-
-    @Override
     public void onClick(View arg0) {
+        printVerbose(TAG, "onClick, arg0.getId():", arg0.getId());
         switch (arg0.getId()) {
             case R.id.inverse:
                 if (infixEvaluate.length() != 0 && (isOperand(infixEvaluate.charAt(infixEvaluate.length() - 1)) ||
@@ -725,8 +697,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (isErrorExp(infixEvaluate))
                     result.setText(getErrorString());
                 else {
-                    postfix = new StringBuffer(InfixToPostfix(infixEvaluate));
-                    value = evaluate(postfix);
+                    //postfix = new StringBuffer(InfixToPostfix(infixEvaluate));
+                    //value = evaluate(postfix);
+                    value = evaluate(infixEvaluate);
                     answerString.delete(0, answerString.length());
                     answerString.append(value.toString());
                     if (answerString.indexOf("E") != -1)
@@ -755,8 +728,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.right:
-                if (leftpos == -1) ;
-                else if ((infixDisplay.length() - leftpos) > 50)
+               if (leftpos != -1 && (infixDisplay.length() - leftpos) > 50)
                     result.setText(infixDisplay.substring(++leftpos));
                 break;
 
@@ -834,6 +806,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void changePreviousBackground(int a) {
+        printVerbose(TAG, "changePreviousBackground, a:", a);
         switch (a) {
             case R.id.inverse:
                 inverse.setBackgroundResource(R.drawable.purple);
@@ -957,6 +930,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void changeCurrentBackground(int a) {
+        printVerbose(TAG, "changeCurrentBackground, a:", a);
         previous = a;
         leftpos = -1;
         switch (a) {

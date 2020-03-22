@@ -11,7 +11,7 @@ public final class Evaluator {
 
     }
 
-    public static String InfixToPostfix(StringBuffer infix) {
+    public static StringBuffer InfixToPostfix(StringBuffer infix) {
         printVerbose(TAG, "InfixToPostfix, infix:", infix);
         int i = 0, len = infix.length();
         StringBuffer postfix = new StringBuffer();
@@ -56,14 +56,15 @@ public final class Evaluator {
         while ((ch = stack.pop1()) != 'E')
             postfix.append(ch);
         printVerbose(TAG, "InfixToPostfix, postfix:", postfix);
-        return postfix.toString();
+        return postfix;
     }
 
-    public static double evaluate(StringBuffer postfix) {
-        printVerbose(TAG, "evaluate, postfix:", postfix);
+    public static double evaluate(StringBuffer infix) {
+        printVerbose(TAG, "evaluate, infix:", infix);
+        StringBuffer postfix = InfixToPostfix(infix);
         double result = 0, operand = 0;
         int i = 0, len = postfix.length(),constant = 0;
-        StringBuffer stringOperand = new StringBuffer();
+        StringBuilder stringOperand = new StringBuilder();
         char ch;
         while (i < len) {
             ch = postfix.charAt(i);
@@ -250,6 +251,8 @@ public final class Evaluator {
 
 
     private static boolean isHighSamePriority(char top, char ch) {
+        printVerbose(TAG, "isHighSamePriority, top:", top, ", ch:", ch);
+        boolean priority = false;
         switch (top) {
             case 'E':
                 break;
@@ -274,7 +277,7 @@ public final class Evaluator {
 
                     case '^':
                     case '~':
-                        return true;
+                        priority = true;
                 }
             case '!':
                 switch (ch) {
@@ -297,7 +300,7 @@ public final class Evaluator {
 
                     case '^':
                     case '!':
-                        return true;
+                        priority = true;
                 }
             case '^':
                 switch (ch) {
@@ -319,7 +322,7 @@ public final class Evaluator {
                     case 'y':
 
                     case '^':
-                        return true;
+                        priority = true;
                 }
             case 'u':
                 switch (ch) {
@@ -339,7 +342,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case 'v':
                 switch (ch) {
@@ -359,7 +362,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case 'w':
                 switch (ch) {
@@ -379,7 +382,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case 'y':
                 switch (ch) {
@@ -399,7 +402,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case 's':
                 switch (ch) {
@@ -419,7 +422,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case 'c':
                 switch (ch) {
@@ -439,7 +442,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case 't':
                 switch (ch) {
@@ -459,7 +462,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case 'l':
                 switch (ch) {
@@ -479,7 +482,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case 'n':
                 switch (ch) {
@@ -499,7 +502,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case 'q':
                 switch (ch) {
@@ -519,7 +522,7 @@ public final class Evaluator {
                     case 'v':
                     case 'w':
                     case 'y':
-                        return true;
+                        priority = true;
                 }
             case '/':
                 switch (ch) {
@@ -527,29 +530,30 @@ public final class Evaluator {
                     case '+':
                     case 'X':
                     case '/':
-                        return true;
+                        priority = true;
                 }
             case 'X':
                 switch (ch) {
                     case '-':
                     case '+':
                     case 'X':
-                        return true;
+                        priority = true;
                 }
             case '+':
                 switch (ch) {
                     case '-':
                     case '+':
-                        return true;
+                        priority = true;
                 }
             case '-':
                 switch (ch) {
                     case '-':
                     case '+':
-                        return true;
+                        priority = true;
                 }
         }
-        return false;
+        printVerbose(TAG, "isHighSamePriority:", priority);
+        return priority;
     }
 
     public static boolean isOperand(char ch) {
